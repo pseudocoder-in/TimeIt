@@ -13,6 +13,11 @@
 		F29CA1A328D6F54A00B88ACD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F29CA1A228D6F54A00B88ACD /* Preview Assets.xcassets */; };
 		F29CA1AE28D6F54A00B88ACD /* TimeItTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29CA1AD28D6F54A00B88ACD /* TimeItTests.swift */; };
 		F29CA1B928D6F54A00B88ACD /* TimeItUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29CA1B828D6F54A00B88ACD /* TimeItUITests.swift */; };
+		F29CA1C728D6F62A00B88ACD /* InsightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29CA1C628D6F62A00B88ACD /* InsightView.swift */; };
+		F29CA1C928D6FA3A00B88ACD /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29CA1C828D6FA3A00B88ACD /* TimerView.swift */; };
+		F29CA1CB28D713F300B88ACD /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29CA1CA28D713F300B88ACD /* SideBar.swift */; };
+		F29CA1CD28D734D200B88ACD /* StopwatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29CA1CC28D734D200B88ACD /* StopwatchView.swift */; };
+		F29CA1CF28D753F900B88ACD /* RecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29CA1CE28D753F900B88ACD /* RecordManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +50,11 @@
 		F29CA1B428D6F54A00B88ACD /* TimeItUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimeItUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F29CA1B828D6F54A00B88ACD /* TimeItUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeItUITests.swift; sourceTree = "<group>"; };
 		F29CA1BA28D6F54A00B88ACD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F29CA1C628D6F62A00B88ACD /* InsightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightView.swift; sourceTree = "<group>"; };
+		F29CA1C828D6FA3A00B88ACD /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		F29CA1CA28D713F300B88ACD /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
+		F29CA1CC28D734D200B88ACD /* StopwatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchView.swift; sourceTree = "<group>"; };
+		F29CA1CE28D753F900B88ACD /* RecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +107,11 @@
 			children = (
 				F29CA19B28D6F54900B88ACD /* TimeItApp.swift */,
 				F29CA19D28D6F54900B88ACD /* ContentView.swift */,
+				F29CA1C828D6FA3A00B88ACD /* TimerView.swift */,
+				F29CA1CC28D734D200B88ACD /* StopwatchView.swift */,
+				F29CA1CE28D753F900B88ACD /* RecordManager.swift */,
+				F29CA1CA28D713F300B88ACD /* SideBar.swift */,
+				F29CA1C628D6F62A00B88ACD /* InsightView.swift */,
 				F29CA19F28D6F54A00B88ACD /* Assets.xcassets */,
 				F29CA1A428D6F54A00B88ACD /* Info.plist */,
 				F29CA1A128D6F54A00B88ACD /* Preview Content */,
@@ -259,7 +274,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F29CA1CB28D713F300B88ACD /* SideBar.swift in Sources */,
+				F29CA1C728D6F62A00B88ACD /* InsightView.swift in Sources */,
+				F29CA1CD28D734D200B88ACD /* StopwatchView.swift in Sources */,
 				F29CA19E28D6F54900B88ACD /* ContentView.swift in Sources */,
+				F29CA1C928D6FA3A00B88ACD /* TimerView.swift in Sources */,
+				F29CA1CF28D753F900B88ACD /* RecordManager.swift in Sources */,
 				F29CA19C28D6F54900B88ACD /* TimeItApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
