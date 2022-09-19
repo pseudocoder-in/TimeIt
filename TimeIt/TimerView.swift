@@ -37,7 +37,7 @@ struct TimerView: View {
                         Text("Last Time")
                             .foregroundColor(.secondary)
                             .font(.title3)
-                        Text(printSecondsToHoursMinutesSeconds(Int(recordManager.records.isEmpty ? 0 : recordManager.records.last!.duration)))
+                        Text(printSecondsToHoursMinutesSeconds(Int(recordManager.profiles[recordManager.activeProfileIndex].records.isEmpty ? 0 : recordManager.profiles[recordManager.activeProfileIndex].records.last!.duration)))
                             .font(.body)
                             .foregroundColor(.secondary)
                             .padding()

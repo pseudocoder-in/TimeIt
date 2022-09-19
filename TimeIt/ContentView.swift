@@ -11,6 +11,8 @@ struct ContentView: View {
     @State private var isSideBarOpened = false
     
     @StateObject var recordManager = RecordManager()
+    
+    
     var body: some View {
         ZStack {
             TabView {

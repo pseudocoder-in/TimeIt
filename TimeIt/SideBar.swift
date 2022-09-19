@@ -14,6 +14,8 @@ struct SideBar: View {
     
     var profileList = ["Default", "Custom"]
     
+    @EnvironmentObject var recordManager: RecordManager
+    
     var body: some View {
         ZStack {
                 GeometryReader { _ in
@@ -39,6 +41,10 @@ struct SideBar: View {
                                 Picker(selection: $profile, label: Text("Profiles")){
                                     ForEach(profileList, id: \.self) { item in
                                             Text(item).tag(item)
+                                    }
+                                    .onDelete{indexSet in
+                                    }
+                                    .onMove{indexSet, index in
                                     }
                                 }
                             }

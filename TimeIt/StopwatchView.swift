@@ -32,6 +32,7 @@ struct StopwatchView: View {
                 
                 
                 Text("\(isTimerRunning ? "STOP" : "START")")
+                    .font(.title).bold()
                             .onReceive(timer) { _ in
                                 if self.isTimerRunning {
                                     timeElapsed += 0.1
