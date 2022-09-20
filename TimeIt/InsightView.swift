@@ -10,35 +10,36 @@ import SwiftUI
 struct InsightView: View {
     @EnvironmentObject var recordManager: RecordManager
     @State var maxHeight:Int = 400
-    func getHeight(duration: Int) -> Int {
+    func getHeights(duration: Int, target: Int) -> (Int, Int) {
         let maxDuration:Int = recordManager.profiles[recordManager.activeProfileIndex].records.max { $0.duration < $1.duration }?.duration ?? 400
         if(maxDuration > 0){
             let relativeHeight = duration * maxHeight / maxDuration
-            return relativeHeight
+            let relativeTarget = target * maxHeight / maxDuration
+            return (relativeHeight, relativeTarget)
         }
-        return 0;
+        return (0,0);
     }
     
     var body: some View {
-        ScrollViewReader { value in
-            ScrollView (.horizontal, showsIndicators: false) {
-                GeometryReader { gp in
+        VStack {
+            ProfileDropDown()
+            ScrollViewReader { value in
+                ScrollView (.horizontal, showsIndicators: false) {
                     VStack {
                         Spacer()
                         HStack(alignment: .bottom,
                                 spacing: 1){
                             ForEach(recordManager.profiles[recordManager.activeProfileIndex].records, id: \.id){ record in
-                                Bar(height: getHeight(duration: record.duration ),  durationInSec:record.duration,
-                                    target: record.target).id(record.id)
+                                Bar(height: getHeights(duration: record.duration, target: record.target).0,  durationInSec:record.duration,
+                                    target: getHeights(duration: record.duration, target: record.target).1).id(record.id)
                             }
                         }
                     }
-                    .frame(height: gp.size.height)
                 }
+                .onAppear(perform: {
+                    value.scrollTo(recordManager.profiles[recordManager.activeProfileIndex].records.last?.id)
+                })
             }
-            .onAppear(perform: {
-                value.scrollTo(recordManager.profiles[recordManager.activeProfileIndex].records.last?.id)
-            })
         }
     }
 }
@@ -53,13 +54,14 @@ struct Bar : View {
     var height: Int
     var durationInSec: Int
     var target: Int
+    var maxHeight = 400.0
     
     var body: some View {
         return ZStack(alignment: .bottom) {
             Rectangle()
-                .fill(Color(UIColor.systemGreen))
+                .fill(self.height >= self.target ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
                 .frame(width: 20, height: CGFloat(self.height))
-                .background(Color(UIColor.systemGreen))
+                .background(self.height >= self.target ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
                 .cornerRadius(5)
             Text("\(durationInSec)")
                 .font(.caption)
@@ -68,8 +70,8 @@ struct Bar : View {
                 .frame(width: 20, height: 180, alignment: .bottom)
                 .padding(.vertical)
             Line()
-               .stroke(style: StrokeStyle(lineWidth: 1, dash: [2]))
-                .frame(height: CGFloat(self.target))
+                .stroke(style: StrokeStyle(lineWidth: self.target > Int(maxHeight) ? 0 : 1, dash: [2]))
+                .frame(height: min(CGFloat(self.target), CGFloat(maxHeight)))
         }
     }
 }

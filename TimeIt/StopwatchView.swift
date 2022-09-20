@@ -10,6 +10,7 @@ import SwiftUI
 struct StopwatchView: View {
     @Binding var timeElapsed:Float
     
+    @State var mSecondValue: Float = 0.0
     @State var secondValue: Float = 0.0
     @State var minuteValue: Float = 0.0
     @State var hourValue: Float = 0.0
@@ -39,10 +40,12 @@ struct StopwatchView: View {
                                     hourValue = Float(timeElapsed / 3600) / 12
                                     minuteValue = (timeElapsed.truncatingRemainder(dividingBy: 3600)) / 60 / 60
                                     secondValue = Float((timeElapsed.truncatingRemainder(dividingBy: 3600)).truncatingRemainder(dividingBy: 60)) / 60
+                                    mSecondValue = (secondValue * 60 ).truncatingRemainder(dividingBy: 1) * 100
                                 } else {
                                     hourValue = 0.0
                                     minuteValue = 0.0
                                     secondValue = 0.0
+                                    mSecondValue = 0.0
                                 }
                 }
                 .padding()
@@ -57,6 +60,7 @@ struct StopwatchView: View {
                     isTimerRunning.toggle()
                 }
             }
+            Text("\(String(format: "%02d", Int(hourValue * 12))):\(String(format: "%02d", Int(minuteValue * 60))):\(String(format: "%02d", Int(secondValue * 60))):\(String(format: "%02d", Int(mSecondValue))) ").padding()
         }
     }
 }

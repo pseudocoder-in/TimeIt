@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Record : Codable{
+struct Record : Codable {
+    
     var id : UUID
     var duration : Int
     var date : Date
@@ -15,58 +16,81 @@ struct Record : Codable{
     static let example = Record(id:UUID(), duration:0, date:  Date.init(), target: 40)
 }
 
-struct Profile : Codable{
+struct Profile : Codable {
     var id : UUID
     var name : String
     var records: [Record]
     var target: Int
-    var isActive : Bool
-    static let DefaultProfile = Profile(id:UUID(), name:"Default", records: [Record.example], target: 40, isActive: true)
+    static let DefaultProfile = Profile(id:UUID(), name:"Default", records: [Record.example], target: 40)
+}
+
+struct ProfileData : Codable{
+    var profiles: [Profile]
+    var activeProfileId : UUID
 }
 
 class RecordManager : ObservableObject {
     @Published var profiles: [Profile]
     @Published var activeProfileIndex: Int
+    @Published var activeProfileId : UUID
     
     init() {
-        let profile = Profile(id:UUID(), name:"Default", records: [], target: 40, isActive: true)
+        let profile = Profile(id:UUID(), name:"Default", records: [], target: 40)
         profiles = [profile]
         activeProfileIndex = 0
+        activeProfileId = profile.id
         loadDataFromStorage()
         if(!self.profiles.isEmpty){
-            activeProfileIndex = self.profiles.firstIndex { $0.isActive == true } ?? 0
+            activeProfileIndex = self.profiles.firstIndex { $0.id == activeProfileId } ?? 0
         }
     }
     
     func addToRecord(seconds: Int){
         profiles[activeProfileIndex].records.append(Record(id:UUID(), duration:seconds, date:  Date.init(), target: profiles[activeProfileIndex].target))
-        // SaveToLocalStore()
+        saveDataToStorage()
+    }
+
+    func setActivateProfileWithId(id: UUID){
+        if let offset = profiles.firstIndex(where: {$0.id == id}) {
+            activeProfileIndex = offset
+            activeProfileId = id
+            saveDataToStorage()
+        }
+    }
+    
+    func modifyProfileWithId(id: UUID, name: String, target: Int) {
+        let index = getIndexForId(id: id)
+        profiles[index].name = name
+        profiles[index].target = target
         saveDataToStorage()
     }
     
-    func setActivateProfileIndex(atOffsets: Int){
-        //check if it passes by reference as we need reference
-        activeProfileIndex = activeProfileIndex
+    func getIndexForId(id: UUID) -> Int {
+        if let offset = profiles.firstIndex(where: {$0.id == id}) {
+            return offset
+        }
+        // FIX THIS
+        return 0
     }
     
     func addProfile(profile: Profile){
         profiles.append(profile)
-        // SaveToLocalStore()
+        saveDataToStorage()
     }
     
     func removeProfile(atOffsets: IndexSet){
         profiles.remove(atOffsets: atOffsets)
-        // SaveToLocalStore()
+        saveDataToStorage()
     }
     
     func moveProfile(fromOffsets: IndexSet, toOffset: Int){
         profiles.move(fromOffsets: fromOffsets, toOffset: toOffset)
-        // SaveToLocalStore()
+        saveDataToStorage()
     }
     
     func saveDataToStorage(){
         let encoder = JSONEncoder()
-        if let encoded = try? encoder.encode(profiles) {
+        if let encoded = try? encoder.encode(ProfileData(profiles: profiles, activeProfileId: activeProfileId)) {
             let defaults = UserDefaults.standard
             defaults.set(encoded, forKey: "Profiles")
         }
@@ -76,12 +100,19 @@ class RecordManager : ObservableObject {
         let defaults = UserDefaults.standard;
         if let savedProfiles = defaults.object(forKey: "Profiles") as? Data {
             let decoder = JSONDecoder()
-            if let profiles = try? decoder.decode([Profile].self, from: savedProfiles) {
-                if(!profiles.isEmpty && !profiles[0].records.isEmpty){
-                    print(profiles[0].records[0].duration)
-                }
-                self.profiles = profiles
+            if let pdata = try? decoder.decode(ProfileData.self, from: savedProfiles) {
+                self.profiles = pdata.profiles
+                self.activeProfileId = pdata.activeProfileId
             }
         }
+    }
+    
+    func resetProfileData(){
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "Profiles")
+        let profile = Profile(id:UUID(), name:"Default", records: [], target: 40)
+        profiles = [profile]
+        activeProfileId = profile.id
+        activeProfileIndex = 0
     }
 }

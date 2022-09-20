@@ -37,17 +37,10 @@ struct SideBar: View {
                 ZStack(alignment: .top) {
                     NavigationView {
                         VStack{
-                            Form {
-                                Picker(selection: $profile, label: Text("Profiles")){
-                                    ForEach(profileList, id: \.self) { item in
-                                            Text(item).tag(item)
-                                    }
-                                    .onDelete{indexSet in
-                                    }
-                                    .onMove{indexSet, index in
-                                    }
+                            Text("Clear Data")
+                                .onTapGesture {
+                                    recordManager.resetProfileData()
                                 }
-                            }
                         }
                     }.navigationTitle("Profiles")
                     MenuChevron
