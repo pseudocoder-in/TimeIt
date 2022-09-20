@@ -13,7 +13,8 @@ struct Record : Codable {
     var duration : Int
     var date : Date
     var target: Int
-    static let example = Record(id:UUID(), duration:0, date:  Date.init(), target: 40)
+    static let example = Record(id:UUID(), duration:30, date:  Date.init(), target: 40)
+    static let defaultRecord = Record(id:UUID(), duration:0, date:  Date.init(), target: 40)
 }
 
 struct Profile : Codable {
@@ -21,7 +22,8 @@ struct Profile : Codable {
     var name : String
     var records: [Record]
     var target: Int
-    static let DefaultProfile = Profile(id:UUID(), name:"Default", records: [Record.example], target: 40)
+    static let DefaultProfile = Profile(id:UUID(), name:"Default", records: [Record.defaultRecord], target: 40)
+    static let ExampleProfile = Profile(id:UUID(), name:"Test", records: [Record.example], target: 40)
 }
 
 struct ProfileData : Codable{

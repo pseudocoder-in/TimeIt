@@ -82,7 +82,7 @@ struct ProgressBar: View {
                 .foregroundColor(color)
                 .rotationEffect(Angle(degrees: 270.0))
                 .shadow(color: Color(UIColor.label), radius: 1)
-                .animation(.linear)
+                .animation(Animation.linear)
         }
     }
 }

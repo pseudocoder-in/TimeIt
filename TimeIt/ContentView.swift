@@ -36,7 +36,7 @@ struct ContentView: View {
                     }
                     .tag(3)
             }
-            .blur(radius: isSideBarOpened ? 3.0 : 0)
+            .opacity(isSideBarOpened ? 0.3 : 1)
             SideBar(isSidebarVisible: $isSideBarOpened)
                 .environmentObject(recordManager)
         }

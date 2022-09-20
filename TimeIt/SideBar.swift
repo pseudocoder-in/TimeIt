@@ -10,9 +10,6 @@ import SwiftUI
 struct SideBar: View {
     @Binding var isSidebarVisible: Bool
     var sideBarWidth = UIScreen.main.bounds.size.width * 0.7
-    @State var profile: String = "Default"
-    
-    var profileList = ["Default", "Custom"]
     
     @EnvironmentObject var recordManager: RecordManager
     
@@ -35,20 +32,51 @@ struct SideBar: View {
     var content: some View {
             HStack(alignment: .top) {
                 ZStack(alignment: .top) {
-                    NavigationView {
-                        VStack{
-                            Text("Clear Data")
-                                .onTapGesture {
-                                    recordManager.resetProfileData()
+                    VStack {
+                        NavigationView {
+                            VStack {
+                                Form {
+                                    Section (header: Text("App Settings")){
+                                        Button(action: {
+                                            recordManager.resetProfileData()
+                                        }) {
+                                            Text("Clear all data")
+                                        }.buttonStyle(.borderless)
+                                    }
+                                    Section(header: Text("ABOUT")) {
+                                        HStack {
+                                            Text("Version")
+                                            Spacer()
+                                            Text("0.0.1")
+                                        }
+                                    }
+                                    
+                                    Section(header: Text("Support")){
+                                        HStack {
+                                            Text("Buy me a coffee")
+                                            Spacer()
+                                            Button(action: {
+                                                //recordManager.resetProfileData()
+                                            }) {
+                                                Text("Rs 140")
+                                            }
+                                        }
+                                    }
                                 }
+                                .padding(.top, 100)
+                                
+                                Text("@pseudocoder.in")
+                                    .font(.caption2)
+                            }
+                            .background(Color(UIColor.systemGroupedBackground))
                         }
-                    }.navigationTitle("Profiles")
+                        .navigationTitle("Settings")
+                    }
                     MenuChevron
                 }
                 .frame(width: sideBarWidth)
                 .offset(x: isSidebarVisible ? 0 : -sideBarWidth)
                 .animation(.default, value: isSidebarVisible)
-
                 Spacer()
             }
         }

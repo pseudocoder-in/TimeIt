@@ -11,7 +11,7 @@ struct InsightView: View {
     @EnvironmentObject var recordManager: RecordManager
     @State var maxHeight:Int = 400
     func getHeights(duration: Int, target: Int) -> (Int, Int) {
-        let maxDuration:Int = recordManager.profiles[recordManager.activeProfileIndex].records.max { $0.duration < $1.duration }?.duration ?? 400
+        let maxDuration:Int = recordManager.profiles[recordManager.activeProfileIndex].records.max { $0.duration < $1.duration }?.duration ?? maxHeight
         if(maxDuration > 0){
             let relativeHeight = duration * maxHeight / maxDuration
             let relativeTarget = target * maxHeight / maxDuration
@@ -23,23 +23,21 @@ struct InsightView: View {
     var body: some View {
         VStack {
             ProfileDropDown()
-            ScrollViewReader { value in
-                ScrollView (.horizontal, showsIndicators: false) {
-                    VStack {
-                        Spacer()
-                        HStack(alignment: .bottom,
-                                spacing: 1){
-                            ForEach(recordManager.profiles[recordManager.activeProfileIndex].records, id: \.id){ record in
-                                Bar(height: getHeights(duration: record.duration, target: record.target).0,  durationInSec:record.duration,
-                                    target: getHeights(duration: record.duration, target: record.target).1).id(record.id)
-                            }
+            Spacer()
+            ScrollView (.horizontal, showsIndicators: false) {
+                ScrollViewReader { value in
+                    HStack(alignment: .bottom,
+                            spacing: 1){
+                        ForEach(recordManager.profiles[recordManager.activeProfileIndex].records, id: \.id){ record in
+                            Bar(height: getHeights(duration: record.duration, target: record.target).0,  durationInSec:record.duration,
+                                target: getHeights(duration: record.duration, target: record.target).1, maxHeight: maxHeight).id(record.id)
                         }
                     }
+                    .onAppear(perform: {
+                        value.scrollTo(recordManager.profiles[recordManager.activeProfileIndex].records.last?.id)
+                    })
                 }
-                .onAppear(perform: {
-                    value.scrollTo(recordManager.profiles[recordManager.activeProfileIndex].records.last?.id)
-                })
-            }
+            }.padding(.vertical)
         }
     }
 }
@@ -54,7 +52,7 @@ struct Bar : View {
     var height: Int
     var durationInSec: Int
     var target: Int
-    var maxHeight = 400.0
+    var maxHeight :Int
     
     var body: some View {
         return ZStack(alignment: .bottom) {
@@ -86,7 +84,12 @@ struct Line: Shape {
 }
 
 struct InsightView_Previews: PreviewProvider {
+    static var recordManager: RecordManager = RecordManager()
+    init(){
+        InsightView_Previews.recordManager.profiles = [Profile.ExampleProfile]
+    }
     static var previews: some View {
         InsightView()
+            .environmentObject(recordManager)
     }
 }
