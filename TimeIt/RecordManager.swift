@@ -91,6 +91,9 @@ class RecordManager : ObservableObject {
     
     func removeProfile(atOffsets: IndexSet){
         profiles.remove(atOffsets: atOffsets)
+        if(atOffsets.contains(activeProfileIndex)){
+            activeProfileIndex = self.profiles.firstIndex { $0.name == "Default" } ?? 0
+        }
         saveDataToStorage()
     }
     
