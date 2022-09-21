@@ -82,7 +82,7 @@ struct AddMenu : View {
     var body: some View {
         Image(systemName: "plus.circle.fill")
             .font(.largeTitle)
-            .padding()
+            .padding(40)
         .onTapGesture {
             showingAddProfileView = true
         }

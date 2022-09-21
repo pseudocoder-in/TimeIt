@@ -162,6 +162,53 @@
             endingLineNumber = "52"
             landmarkName = "purchase()"
             landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "5E8971A6-1AC5-489D-BC06-77AC6CA06CA2 - 1b819fbf2b454652"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for closure #1 @Sendable () async -&gt; () in TimeIt.PurchaseManager.purchase() -&gt; ()"
+                  moduleName = "TimeIt"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/subhash/Documents/code/TimeIt/TimeIt/Store.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "612">
+               </Location>
+               <Location
+                  uuid = "5E8971A6-1AC5-489D-BC06-77AC6CA06CA2 - 2e369fff3653b3ca"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for closure #1 @Sendable () async -&gt; () in TimeIt.PurchaseManager.purchase() -&gt; ()"
+                  moduleName = "TimeIt"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/subhash/Documents/code/TimeIt/TimeIt/Store.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  uuid = "5E8971A6-1AC5-489D-BC06-77AC6CA06CA2 - 513146c4a343a851"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for closure #1 @Sendable () async -&gt; () in TimeIt.PurchaseManager.purchase() -&gt; ()"
+                  moduleName = "TimeIt"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/subhash/Documents/code/TimeIt/TimeIt/Store.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "64">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

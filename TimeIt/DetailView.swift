@@ -37,7 +37,7 @@ struct DetailView: View {
                     Text("Save")
                 }
                 Spacer()
-            }
+            }.padding()
         }
         .padding()
         .onAppear(perform: {
