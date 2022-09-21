@@ -7,8 +7,13 @@
 
 import SwiftUI
 
+
+let timerStep = 0.01
+let timer = Timer.publish(every: timerStep, on: .main, in: .common).autoconnect()
+
 struct StopwatchView: View {
     @Binding var timeElapsed:Float
+    @Binding var timerType:TimerType
     
     @State var mSecondValue: Float = 0.0
     @State var secondValue: Float = 0.0
@@ -19,10 +24,18 @@ struct StopwatchView: View {
     @EnvironmentObject var recordManager: RecordManager
     
     @State var isTimerRunning = false
-    let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
 
     var body: some View {
-        VStack {
+        if(timerType == TimerType.classic){
+            ClassicTimer
+        } else {
+            ModernTimer
+        }
+    }
+    
+    
+    var ClassicTimer: some View {
+        VStack{
             ZStack {
                 ProgressBar(progress: self.$secondValue, color: Color(UIColor.systemYellow))
                     .frame(width: 240.0, height: 240.0)
@@ -36,7 +49,7 @@ struct StopwatchView: View {
                     .font(.title).bold()
                             .onReceive(timer) { _ in
                                 if self.isTimerRunning {
-                                    timeElapsed += 0.1
+                                    timeElapsed += Float(timerStep)
                                     hourValue = Float(timeElapsed / 3600) / 12
                                     minuteValue = (timeElapsed.truncatingRemainder(dividingBy: 3600)) / 60 / 60
                                     secondValue = Float((timeElapsed.truncatingRemainder(dividingBy: 3600)).truncatingRemainder(dividingBy: 60)) / 60
@@ -50,7 +63,7 @@ struct StopwatchView: View {
                 }
                 .padding()
                 .frame(width: 150, height: 150, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                .background(Color(UIColor.secondaryLabel.withAlphaComponent(0.5)))
+                //.background(Color(UIColor.secondaryLabel.withAlphaComponent(0.5)))
                 .cornerRadius(150)
                 .onTapGesture {
                     if(isTimerRunning){
@@ -60,12 +73,92 @@ struct StopwatchView: View {
                     isTimerRunning.toggle()
                 }
             }
-            Text("\(String(format: "%02d", Int(hourValue * 12))):\(String(format: "%02d", Int(minuteValue * 60))):\(String(format: "%02d", Int(secondValue * 60))):\(String(format: "%02d", Int(mSecondValue))) ").padding()
+            Text("\(String(format: "%02d", Int(hourValue * 12))):\(String(format: "%02d", Int(minuteValue * 60))):\(String(format: "%02d", Int(secondValue * 60))):\(String(format: "%02d", Int(mSecondValue))) ")
+                .bold()
+                .padding()
+                .foregroundColor(isTimerRunning ? Color.green : Color.primary)
+        }
+    }
+    
+    var ModernTimer: some View {
+        VStack{
+            ZStack {
+                ModernProgressBar(isTimerRunning: self.$isTimerRunning, color: Color(UIColor.systemYellow))
+                    .frame(width: 240.0, height: 240.0)
+                
+                
+                Text("\(isTimerRunning ? "STOP" : "START")")
+                    .font(.title).bold()
+                            .onReceive(timer) { _ in
+                                if self.isTimerRunning {
+                                    timeElapsed += Float(timerStep)
+                                    hourValue = Float(timeElapsed / 3600) / 12
+                                    minuteValue = (timeElapsed.truncatingRemainder(dividingBy: 3600)) / 60 / 60
+                                    secondValue = Float((timeElapsed.truncatingRemainder(dividingBy: 3600)).truncatingRemainder(dividingBy: 60)) / 60
+                                    mSecondValue = (secondValue * 60 ).truncatingRemainder(dividingBy: 1) * 100
+                                } else {
+                                    hourValue = 0.0
+                                    minuteValue = 0.0
+                                    secondValue = 0.0
+                                    mSecondValue = 0.0
+                                }
+                }
+                .padding()
+                .frame(width: 150, height: 150, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                .cornerRadius(150)
+                .onTapGesture {
+                    if(isTimerRunning){
+                        recordManager.addToRecord(seconds: Int(timeElapsed))
+                    }
+                    timeElapsed = 0
+                    isTimerRunning.toggle()
+                }
+            }
+            Text("\(String(format: "%02d", Int(hourValue * 12))):\(String(format: "%02d", Int(minuteValue * 60))):\(String(format: "%02d", Int(secondValue * 60))):\(String(format: "%02d", Int(mSecondValue))) ")
+                .bold()
+                .padding()
+                .foregroundColor(isTimerRunning ? Color.green : Color.primary)
         }
     }
 }
 
 
+struct ModernProgressBar: View {
+    @Binding var isTimerRunning: Bool
+    @State var color: Color
+    var foreverAnimation: Animation {
+            Animation.linear(duration: 2.0)
+                .repeatForever(autoreverses: false)
+        }
+    
+    private let gradient = AngularGradient(
+        gradient: Gradient(colors: [Color.blue, Color(UIColor.systemBackground)]),
+        center: .center,
+        startAngle: .degrees(270),
+        endAngle: .degrees(0))
+    
+    var body: some View {
+        ZStack {
+            /*Circle()
+                .trim(from: 0.0, to: 0.4)
+                .stroke(style: StrokeStyle(lineWidth: 15.0, lineCap: .round, lineJoin: .round))
+                .foregroundColor(color)
+                .rotationEffect(Angle(degrees: isTimerRunning ? 360 : 0))
+                .shadow(color: Color(UIColor.label), radius: 1)
+                .animation(isTimerRunning ? foreverAnimation : .default)*/
+            Circle()
+                .trim(from: 0, to: CGFloat(0.8))
+                .stroke(gradient, style: StrokeStyle(lineWidth: 15, lineCap: .round))
+                .overlay(
+                    Circle().trim(from: 0, to: CGFloat(0.8))
+                    .rotation(Angle.degrees(-4))
+                    .stroke(gradient, style: StrokeStyle(lineWidth: 15, lineCap: .butt)))
+                    .rotationEffect(Angle(degrees: isTimerRunning ? 360 : 0))
+                    .animation(isTimerRunning ? foreverAnimation : .default, value: isTimerRunning)
+             
+        }
+    }
+}
 
 struct ProgressBar: View {
     @Binding var progress: Float
@@ -82,13 +175,13 @@ struct ProgressBar: View {
                 .foregroundColor(color)
                 .rotationEffect(Angle(degrees: 270.0))
                 .shadow(color: Color(UIColor.label), radius: 1)
-                .animation(Animation.linear)
+                .animation(Animation.linear, value:self.progress)
         }
     }
 }
 
 struct StopwatchView_Previews: PreviewProvider {
     static var previews: some View {
-        StopwatchView(timeElapsed: .constant(0))
+        StopwatchView(timeElapsed: .constant(0), timerType: .constant(TimerType.modern))
     }
 }

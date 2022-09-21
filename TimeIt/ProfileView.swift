@@ -15,7 +15,7 @@ struct ProfileView: View {
     
     var body: some View {
         NavigationView {
-        VStack{
+        ZStack{
             List{
                     ForEach(recordManager.profiles, id: \.id) { profile in
                         HStack {
@@ -33,9 +33,12 @@ struct ProfileView: View {
                         recordManager.moveProfile(fromOffsets: indexSet, toOffset: index)
                     }
             }
-            HStack{
+            VStack {
                 Spacer()
-                AddMenu()
+                HStack{
+                    Spacer()
+                    AddMenu()
+                }
             }
         }
         .navigationTitle("Profile")
@@ -53,7 +56,7 @@ struct ProfileView: View {
                 }
             }
         )
-        .environment(\.editMode, .constant(self.isEditing ? EditMode.active : EditMode.inactive)).animation(Animation.spring())
+        .environment(\.editMode, .constant(self.isEditing ? EditMode.active : EditMode.inactive))
         .environmentObject(recordManager)
         .toolbar { // <2>
             ToolbarItem(placement: .principal) { // <3>

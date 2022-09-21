@@ -11,7 +11,7 @@ struct InsightView: View {
     @EnvironmentObject var recordManager: RecordManager
     @State var maxHeight:Int = 400
     func getHeights(duration: Int, target: Int) -> (Int, Int) {
-        let maxDuration:Int = recordManager.profiles[recordManager.activeProfileIndex].records.max { $0.duration < $1.duration }?.duration ?? maxHeight
+        let maxDuration:Int = recordManager.getActiveProfile().records.max { $0.duration < $1.duration }?.duration ?? maxHeight
         if(maxDuration > 0){
             let relativeHeight = duration * maxHeight / maxDuration
             let relativeTarget = target * maxHeight / maxDuration
@@ -24,17 +24,31 @@ struct InsightView: View {
         VStack {
             ProfileDropDown()
             Spacer()
+            VStack{
+                Text("Best")
+                    .font(.title2)
+                Text(printSecondsToHoursMinutesSeconds1(getMaxDuration(records: recordManager.getActiveProfile().records)))
+                    .font(.title).bold()
+                HStack{
+                    Text("Target")
+                        .font(.body)
+                    Text(printSecondsToHoursMinutesSeconds1(recordManager.getActiveProfile().target))
+                        .font(.body)
+                }
+                .foregroundColor(Color.secondary)
+            }
+            Spacer()
             ScrollView (.horizontal, showsIndicators: false) {
                 ScrollViewReader { value in
                     HStack(alignment: .bottom,
                             spacing: 1){
-                        ForEach(recordManager.profiles[recordManager.activeProfileIndex].records, id: \.id){ record in
+                        ForEach(recordManager.getActiveProfile().records, id: \.id){ record in
                             Bar(height: getHeights(duration: record.duration, target: record.target).0,  durationInSec:record.duration,
                                 target: getHeights(duration: record.duration, target: record.target).1, maxHeight: maxHeight).id(record.id)
                         }
                     }
                     .onAppear(perform: {
-                        value.scrollTo(recordManager.profiles[recordManager.activeProfileIndex].records.last?.id)
+                        value.scrollTo(recordManager.getActiveProfile().records.last?.id)
                     })
                 }
             }.padding(.vertical)
@@ -42,11 +56,24 @@ struct InsightView: View {
     }
 }
 
+func getMaxDuration(records: [Record]) -> Int {
+    if(records.isEmpty){
+        return 0
+    }
+    return records.max { $0.duration < $1.duration }?.duration ?? 0
+}
+
 func printSecondsToHoursMinutesSeconds1(_ seconds: Int) -> String{
   let (h, m, s) = secondsToHoursMinutesSeconds(seconds)
   return "\(h):\(m):\(s)"
 }
 
+func getBarColor(height: Int, target: Int) -> Color {
+    if(height >= Int(Double(target) * 0.8) && height < target) {
+        return Color.yellow
+    }
+    return height >= target ? Color.green : Color.red
+}
 
 struct Bar : View {
     var height: Int
@@ -57,9 +84,9 @@ struct Bar : View {
     var body: some View {
         return ZStack(alignment: .bottom) {
             Rectangle()
-                .fill(self.height >= self.target ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
+                .fill(getBarColor(height: height, target: target))
                 .frame(width: 20, height: CGFloat(self.height))
-                .background(self.height >= self.target ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
+                .opacity(0.9)
                 .cornerRadius(5)
             Text("\(durationInSec)")
                 .font(.caption)

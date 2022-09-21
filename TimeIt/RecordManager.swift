@@ -29,30 +29,39 @@ struct Profile : Codable {
 struct ProfileData : Codable{
     var profiles: [Profile]
     var activeProfileId : UUID
+    var timerType : TimerType
 }
 
 class RecordManager : ObservableObject {
     @Published var profiles: [Profile]
     @Published var activeProfileIndex: Int
     @Published var activeProfileId : UUID
+    @Published var timerType : TimerType
     
     init() {
         let profile = Profile(id:UUID(), name:"Default", records: [], target: 40)
         profiles = [profile]
         activeProfileIndex = 0
         activeProfileId = profile.id
+        timerType = TimerType.modern
         loadDataFromStorage()
         if(!self.profiles.isEmpty){
             activeProfileIndex = self.profiles.firstIndex { $0.id == activeProfileId } ?? 0
         }
     }
     
+    func getActiveProfile() -> Profile{
+        //let index = getIndexForId(id:activeProfileId)
+        return profiles[activeProfileIndex]
+    }
+    
     func addToRecord(seconds: Int){
-        profiles[activeProfileIndex].records.append(Record(id:UUID(), duration:seconds, date:  Date.init(), target: profiles[activeProfileIndex].target))
+        let index = getIndexForId(id:activeProfileId)
+        profiles[index].records.append(Record(id:UUID(), duration:seconds, date:  Date.init(), target: profiles[activeProfileIndex].target))
         saveDataToStorage()
     }
 
-    func setActivateProfileWithId(id: UUID){
+    func setActiveProfileWithId(id: UUID){
         if let offset = profiles.firstIndex(where: {$0.id == id}) {
             activeProfileIndex = offset
             activeProfileId = id
@@ -90,9 +99,14 @@ class RecordManager : ObservableObject {
         saveDataToStorage()
     }
     
+    func setTimerType(type: TimerType){
+        timerType = type;
+        saveDataToStorage()
+    }
+    
     func saveDataToStorage(){
         let encoder = JSONEncoder()
-        if let encoded = try? encoder.encode(ProfileData(profiles: profiles, activeProfileId: activeProfileId)) {
+        if let encoded = try? encoder.encode(ProfileData(profiles: profiles, activeProfileId: activeProfileId, timerType: timerType)) {
             let defaults = UserDefaults.standard
             defaults.set(encoded, forKey: "Profiles")
         }
@@ -105,6 +119,7 @@ class RecordManager : ObservableObject {
             if let pdata = try? decoder.decode(ProfileData.self, from: savedProfiles) {
                 self.profiles = pdata.profiles
                 self.activeProfileId = pdata.activeProfileId
+                self.timerType = pdata.timerType
             }
         }
     }
@@ -116,5 +131,6 @@ class RecordManager : ObservableObject {
         profiles = [profile]
         activeProfileId = profile.id
         activeProfileIndex = 0
+        timerType = TimerType.modern
     }
 }

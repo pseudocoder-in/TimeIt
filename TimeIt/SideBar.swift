@@ -43,14 +43,6 @@ struct SideBar: View {
                                             Text("Clear all data")
                                         }.buttonStyle(.borderless)
                                     }
-                                    Section(header: Text("ABOUT")) {
-                                        HStack {
-                                            Text("Version")
-                                            Spacer()
-                                            Text("0.0.1")
-                                        }
-                                    }
-                                    
                                     Section(header: Text("Support")){
                                         HStack {
                                             Text("Buy me a coffee")
@@ -62,6 +54,21 @@ struct SideBar: View {
                                             }
                                         }
                                     }
+                                    
+                                    Section(header: Text("ABOUT")) {
+                                        HStack {
+                                            Text("Version")
+                                            Spacer()
+                                            Text("0.0.1")
+                                        }
+                                        
+                                        HStack {
+                                            Spacer()
+                                            Link("Contact Us", destination: URL(string: "mailto:contact@pseudocoder.in")!)
+                                                .font(.body)
+                                            Spacer()
+                                        }
+                                    }
                                 }
                                 .padding(.top, 100)
                                 
@@ -71,6 +78,17 @@ struct SideBar: View {
                             .background(Color(UIColor.systemGroupedBackground))
                         }
                         .navigationTitle("Settings")
+                    }
+                    HStack(spacing:0) {
+                        Text("Time")
+                            .font(.title)
+                            .bold()
+                        .offset(y: 60)
+                        Text("It")
+                            .font(.title)
+                            .foregroundColor(Color.green)
+                            .bold()
+                        .offset(y: 60)
                     }
                     MenuChevron
                 }
