@@ -51,22 +51,32 @@ struct SideBar: View {
                                     }
                                     Section(header: Text("Support")){
                                         if(purchaseManager.purchasedIds.isEmpty){
+                                            VStack(alignment: .leading, spacing:6) {
                                                 HStack {
-                                                    Text("Buy me a coffee")
-                                                    Spacer()
-                                                    Button(action: {
-                                                        purchaseManager.purchase()
-                                                            
-                                                    }) {
-                                                        Text("Rs 140")
-                                                    }
+                                                        Text("Buy me a coffee")
+                                                        Spacer()
+                                                        Button(action: {
+                                                            purchaseManager.purchase()
+                                                                
+                                                        }) {
+                                                            Text("Rs 140")
+                                                        }
                                                 }
+                                                Text("We need to pay anuual fee to Apple in order to keep this product in the appstore. We need your support in maintaining this app.")
+                                                    .font(.caption)
+                                                    .foregroundColor(Color.secondary)
+                                                Text("All the features will always be free and wihtout any ads").font(.caption)
+                                                    .foregroundColor(Color.primary)
+                                            }
                                         } else {
-                                            HStack {
-                                                Text("Thanks for your contribution")
-                                                    .font(.callout)
-                                                Spacer()
-                                                Image(systemName: "heart.fill")
+                                            VStack(alignment: .leading, spacing:6) {
+                                                HStack {
+                                                    Text("Thanks for your tip")
+                                                        .font(.callout)
+                                                    Image(systemName: "heart.fill")
+                                                }
+                                                Text("This will help us in keeping this app active and free from any ads or from adding any feature behind a paywall. Thanks again.").font(.caption)
+                                                    .foregroundColor(Color.secondary)
                                             }
                                         }
                                     }
