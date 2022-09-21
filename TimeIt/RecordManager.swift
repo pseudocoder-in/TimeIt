@@ -7,14 +7,16 @@
 
 import Foundation
 
+let defaultTarget : Int = 20
+
 struct Record : Codable {
     
     var id : UUID
     var duration : Int
     var date : Date
     var target: Int
-    static let example = Record(id:UUID(), duration:30, date:  Date.init(), target: 40)
-    static let defaultRecord = Record(id:UUID(), duration:0, date:  Date.init(), target: 40)
+    static let example = Record(id:UUID(), duration:30, date:  Date.init(), target: defaultTarget)
+    static let defaultRecord = Record(id:UUID(), duration:0, date:  Date.init(), target: defaultTarget)
 }
 
 struct Profile : Codable {
@@ -22,8 +24,8 @@ struct Profile : Codable {
     var name : String
     var records: [Record]
     var target: Int
-    static let DefaultProfile = Profile(id:UUID(), name:"Default", records: [Record.defaultRecord], target: 40)
-    static let ExampleProfile = Profile(id:UUID(), name:"Test", records: [Record.example], target: 40)
+    static let DefaultProfile = Profile(id:UUID(), name:"Default", records: [Record.defaultRecord], target: defaultTarget)
+    static let ExampleProfile = Profile(id:UUID(), name:"Test", records: [Record.example], target: defaultTarget)
 }
 
 struct ProfileData : Codable{
@@ -39,7 +41,7 @@ class RecordManager : ObservableObject {
     @Published var timerType : TimerType
     
     init() {
-        let profile = Profile(id:UUID(), name:"Default", records: [], target: 40)
+        let profile = Profile(id:UUID(), name:"Default", records: [], target: defaultTarget)
         profiles = [profile]
         activeProfileIndex = 0
         activeProfileId = profile.id
@@ -131,7 +133,7 @@ class RecordManager : ObservableObject {
     func resetProfileData(){
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: "Profiles")
-        let profile = Profile(id:UUID(), name:"Default", records: [], target: 40)
+        let profile = Profile(id:UUID(), name:"Default", records: [], target: defaultTarget)
         profiles = [profile]
         activeProfileId = profile.id
         activeProfileIndex = 0
