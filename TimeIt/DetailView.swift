@@ -16,13 +16,15 @@ struct DetailView: View {
     @State private var hours: Int = 0
     @State private var minutes: Int = 0
     @State private var seconds: Int = 0
+    @State private var nameDisabled: Bool = false
     
     var body: some View {
         VStack{
             Spacer()
-            ProfileFormView(name: $name, hours: $hours, minutes: $minutes, seconds: $seconds)
+            ProfileFormView(name: $name, hours: $hours, minutes: $minutes, seconds: $seconds, nameDisabled: $nameDisabled)
             Spacer()
             HStack(){
+                Spacer()
                 Button(action : { self.presentationMode.wrappedValue.dismiss() }) {
                     Text("Cancel")
                 }
@@ -34,6 +36,7 @@ struct DetailView: View {
                 }) {
                     Text("Save")
                 }
+                Spacer()
             }
         }
         .padding()
@@ -49,6 +52,7 @@ struct DetailView: View {
             hours = h
             minutes = m
             seconds = s
+            nameDisabled = name == "Default"
         })
     }
 }

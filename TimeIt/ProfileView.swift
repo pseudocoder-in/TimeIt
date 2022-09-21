@@ -22,8 +22,8 @@ struct ProfileView: View {
                             //Image(systemName: workout.icon)
                             //    .padding(.horizontal)
                             Text(profile.name)
-                                .disabled(profile.name == "Default")
                         }
+                        .deleteDisabled(profile.name == "Default")
                         .background( NavigationLink("", destination: DetailView(profileId: profile.id)).opacity(0) )
                     }
                     .onDelete{indexSet in
@@ -100,11 +100,13 @@ struct AddProfileView : View {
     @State private var hours: Int = 0
     @State private var minutes: Int = 0
     @State private var seconds: Int = 0
+    
+    @State private var showingAlert = false
         
     var body : some View {
         VStack {
             Spacer()
-            ProfileFormView(name: $name, hours: $hours, minutes: $minutes, seconds: $seconds)
+            ProfileFormView(name: $name, hours: $hours, minutes: $minutes, seconds: $seconds, nameDisabled : .constant(false))
             Spacer()
             HStack {
                 Spacer()
@@ -115,9 +117,13 @@ struct AddProfileView : View {
                 }
                 Spacer()
                 Button(action: {
-                    let newProfile = Profile(id:UUID(), name:name, records: [], target: hours * 3600 + minutes * 60 + seconds)
-                    recordManager.addProfile(profile: newProfile)
-                    showingAddProfileView = false
+                    if(name == "Default"){
+                        showingAlert = true
+                    } else {
+                        let newProfile = Profile(id:UUID(), name:name, records: [], target: hours * 3600 + minutes * 60 + seconds)
+                        recordManager.addProfile(profile: newProfile)
+                        showingAddProfileView = false
+                    }
                 }) {
                     Text("Save")
                 }
@@ -125,6 +131,12 @@ struct AddProfileView : View {
             }
             Spacer()
         }.padding()
+        .alert("Invalid Name", isPresented: $showingAlert) {
+            VStack {
+                Text("Please select a different name.")
+                Button("OK", role: .cancel) { }
+            }
+        }
     }
     
 }
@@ -134,12 +146,14 @@ struct ProfileFormView : View {
     @Binding var hours: Int
     @Binding var minutes: Int
     @Binding var seconds: Int
+    @Binding var nameDisabled : Bool
     
     var body : some View {
         TextField("Name", text: $name)
             .padding()
             .background(Color(UIColor.secondaryLabel.withAlphaComponent(0.1)))
             .cornerRadius(10)
+            .disabled(nameDisabled)
         
         Spacer()
         Text("Choose Target")

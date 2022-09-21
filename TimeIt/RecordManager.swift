@@ -96,6 +96,7 @@ class RecordManager : ObservableObject {
     
     func moveProfile(fromOffsets: IndexSet, toOffset: Int){
         profiles.move(fromOffsets: fromOffsets, toOffset: toOffset)
+        activeProfileIndex = self.profiles.firstIndex { $0.id == activeProfileId } ?? 0
         saveDataToStorage()
     }
     

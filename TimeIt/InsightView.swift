@@ -65,7 +65,8 @@ func getMaxDuration(records: [Record]) -> Int {
 
 func printSecondsToHoursMinutesSeconds1(_ seconds: Int) -> String{
   let (h, m, s) = secondsToHoursMinutesSeconds(seconds)
-  return "\(h):\(m):\(s)"
+   return "\(String(format: "%02d", Int(h))):\(String(format: "%02d", Int(m))):\(String(format: "%02d", Int(s)))"
+  //return "\(h):\(m):\(s)"
 }
 
 func getBarColor(height: Int, target: Int) -> Color {
