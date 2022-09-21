@@ -20,6 +20,7 @@
 		F29CA1CF28D753F900B88ACD /* RecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29CA1CE28D753F900B88ACD /* RecordManager.swift */; };
 		F29CA1D128D8B9EF00B88ACD /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29CA1D028D8B9EF00B88ACD /* ProfileView.swift */; };
 		F29CA1D328D8BDA300B88ACD /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29CA1D228D8BDA300B88ACD /* DetailView.swift */; };
+		F2FD590A28DB454A00E773CE /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2FD590928DB454A00E773CE /* Store.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,8 @@
 		F29CA1CE28D753F900B88ACD /* RecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordManager.swift; sourceTree = "<group>"; };
 		F29CA1D028D8B9EF00B88ACD /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		F29CA1D228D8BDA300B88ACD /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		F2FD590928DB454A00E773CE /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		F2FD590B28DB47EC00E773CE /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +118,8 @@
 				F29CA1CC28D734D200B88ACD /* StopwatchView.swift */,
 				F29CA1CE28D753F900B88ACD /* RecordManager.swift */,
 				F29CA1CA28D713F300B88ACD /* SideBar.swift */,
+				F2FD590928DB454A00E773CE /* Store.swift */,
+				F2FD590B28DB47EC00E773CE /* Configuration.storekit */,
 				F29CA1D028D8B9EF00B88ACD /* ProfileView.swift */,
 				F29CA1D228D8BDA300B88ACD /* DetailView.swift */,
 				F29CA1C628D6F62A00B88ACD /* InsightView.swift */,
@@ -285,6 +290,7 @@
 				F29CA1CB28D713F300B88ACD /* SideBar.swift in Sources */,
 				F29CA1C728D6F62A00B88ACD /* InsightView.swift in Sources */,
 				F29CA1CD28D734D200B88ACD /* StopwatchView.swift in Sources */,
+				F2FD590A28DB454A00E773CE /* Store.swift in Sources */,
 				F29CA19E28D6F54900B88ACD /* ContentView.swift in Sources */,
 				F29CA1C928D6FA3A00B88ACD /* TimerView.swift in Sources */,
 				F29CA1CF28D753F900B88ACD /* RecordManager.swift in Sources */,

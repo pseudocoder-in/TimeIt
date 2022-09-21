@@ -18,7 +18,6 @@ struct TimerView: View {
     @State var hourValue: Float = 0.0
     @State var timerType : TimerType = TimerType.modern
     
-    
     @EnvironmentObject var recordManager: RecordManager
     
     var body: some View {

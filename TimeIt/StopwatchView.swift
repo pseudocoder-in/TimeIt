@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import AVFoundation
 
 let timerStep = 0.01
 let timer = Timer.publish(every: timerStep, on: .main, in: .common).autoconnect()
@@ -15,10 +15,14 @@ struct StopwatchView: View {
     @Binding var timeElapsed:Float
     @Binding var timerType:TimerType
     
+    @State var target: Int = 20
+    
     @State var mSecondValue: Float = 0.0
     @State var secondValue: Float = 0.0
     @State var minuteValue: Float = 0.0
     @State var hourValue: Float = 0.0
+    
+    @State var firstTime = true;
     
     
     @EnvironmentObject var recordManager: RecordManager
@@ -26,6 +30,13 @@ struct StopwatchView: View {
     @State var isTimerRunning = false
 
     var body: some View {
+        self.view
+            .onAppear(perform: {
+                target = recordManager.getActiveProfile().target;
+            })
+    }
+
+    @ViewBuilder var view: some View {
         if(timerType == TimerType.classic){
             ClassicTimer
         } else {
@@ -33,6 +44,12 @@ struct StopwatchView: View {
         }
     }
     
+    func checkAndPlaySound(){
+        if(Int(timeElapsed) == target && firstTime){
+            AudioServicesPlaySystemSound(SystemSoundID(1054))
+            firstTime = false
+        }
+    }
     
     var ClassicTimer: some View {
         VStack{
@@ -50,6 +67,7 @@ struct StopwatchView: View {
                             .onReceive(timer) { _ in
                                 if self.isTimerRunning {
                                     timeElapsed += Float(timerStep)
+                                    checkAndPlaySound()
                                     hourValue = Float(timeElapsed / 3600) / 12
                                     minuteValue = (timeElapsed.truncatingRemainder(dividingBy: 3600)) / 60 / 60
                                     secondValue = Float((timeElapsed.truncatingRemainder(dividingBy: 3600)).truncatingRemainder(dividingBy: 60)) / 60
@@ -69,6 +87,7 @@ struct StopwatchView: View {
                     if(isTimerRunning){
                         recordManager.addToRecord(seconds: Int(timeElapsed))
                     }
+                    firstTime = true
                     timeElapsed = 0
                     isTimerRunning.toggle()
                 }
@@ -92,6 +111,7 @@ struct StopwatchView: View {
                             .onReceive(timer) { _ in
                                 if self.isTimerRunning {
                                     timeElapsed += Float(timerStep)
+                                    checkAndPlaySound()
                                     hourValue = Float(timeElapsed / 3600) / 12
                                     minuteValue = (timeElapsed.truncatingRemainder(dividingBy: 3600)) / 60 / 60
                                     secondValue = Float((timeElapsed.truncatingRemainder(dividingBy: 3600)).truncatingRemainder(dividingBy: 60)) / 60
@@ -110,6 +130,7 @@ struct StopwatchView: View {
                     if(isTimerRunning){
                         recordManager.addToRecord(seconds: Int(timeElapsed))
                     }
+                    firstTime = true
                     timeElapsed = 0
                     isTimerRunning.toggle()
                 }
@@ -139,13 +160,6 @@ struct ModernProgressBar: View {
     
     var body: some View {
         ZStack {
-            /*Circle()
-                .trim(from: 0.0, to: 0.4)
-                .stroke(style: StrokeStyle(lineWidth: 15.0, lineCap: .round, lineJoin: .round))
-                .foregroundColor(color)
-                .rotationEffect(Angle(degrees: isTimerRunning ? 360 : 0))
-                .shadow(color: Color(UIColor.label), radius: 1)
-                .animation(isTimerRunning ? foreverAnimation : .default)*/
             Circle()
                 .trim(from: 0, to: CGFloat(0.8))
                 .stroke(gradient, style: StrokeStyle(lineWidth: 15, lineCap: .round))
@@ -182,6 +196,6 @@ struct ProgressBar: View {
 
 struct StopwatchView_Previews: PreviewProvider {
     static var previews: some View {
-        StopwatchView(timeElapsed: .constant(0), timerType: .constant(TimerType.modern))
+        StopwatchView(timeElapsed: .constant(0), timerType: .constant(TimerType.modern), target: 10)
     }
 }

@@ -13,6 +13,9 @@ struct SideBar: View {
     
     @EnvironmentObject var recordManager: RecordManager
     
+    @StateObject var purchaseManager: PurchaseManager = PurchaseManager()
+
+    
     var body: some View {
         ZStack {
                 GeometryReader { _ in
@@ -27,6 +30,9 @@ struct SideBar: View {
                 content
             }
             .edgesIgnoringSafeArea(.all)
+            .onAppear(perform: {
+                purchaseManager.fetchProduct()
+            })
     }
     
     var content: some View {
@@ -44,13 +50,23 @@ struct SideBar: View {
                                         }.buttonStyle(.borderless)
                                     }
                                     Section(header: Text("Support")){
-                                        HStack {
-                                            Text("Buy me a coffee")
-                                            Spacer()
-                                            Button(action: {
-                                                //recordManager.resetProfileData()
-                                            }) {
-                                                Text("Rs 140")
+                                        if(purchaseManager.purchasedIds.isEmpty){
+                                                HStack {
+                                                    Text("Buy me a coffee")
+                                                    Spacer()
+                                                    Button(action: {
+                                                        purchaseManager.purchase()
+                                                            
+                                                    }) {
+                                                        Text("Rs 140")
+                                                    }
+                                                }
+                                        } else {
+                                            HStack {
+                                                Text("Thanks for your contribution")
+                                                    .font(.callout)
+                                                Spacer()
+                                                Image(systemName: "heart.fill")
                                             }
                                         }
                                     }

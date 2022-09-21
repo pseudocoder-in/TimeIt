@@ -1,0 +1,33 @@
+{
+  "identifier" : "2085B912",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "576DF402",
+      "localizations" : [
+        {
+          "description" : "an app to track your workouts time",
+          "displayName" : "Track It",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "in.pseudocoder.timeit",
+      "referenceName" : null,
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 2
+  }
+}
