@@ -122,6 +122,7 @@ struct AddProfileView : View {
                     } else {
                         let newProfile = Profile(id:UUID(), name:name, records: [], target: hours * 3600 + minutes * 60 + seconds)
                         recordManager.addProfile(profile: newProfile)
+                        recordManager.setActiveProfileWithId(id: newProfile.id)
                         showingAddProfileView = false
                     }
                 }) {
@@ -141,6 +142,12 @@ struct AddProfileView : View {
     
 }
 
+extension UIPickerView {
+    open override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric , height: super.intrinsicContentSize.height)
+    }
+}
+
 struct ProfileFormView : View {
     @Binding var name: String
     @Binding var hours: Int
@@ -158,37 +165,40 @@ struct ProfileFormView : View {
         Spacer()
         Text("Choose Target")
             .font(.body)
-        HStack{
-            Picker(selection: $hours, label: Text("Amount")){
-                ForEach(0...24, id: \.self) {
-                    Text("\($0)")
-                        .tag($0)
+            HStack{
+                Picker(selection: $hours, label: Text("Amount")){
+                    ForEach(0...24, id: \.self) {
+                        Text("\($0)")
+                            .tag($0)
+                    }
                 }
-            }
-                .pickerStyle(WheelPickerStyle())
-                .frame(width: 100)
-                .clipped()
-            Text(":")
-            Picker(selection: $minutes, label: Text("Type")){
-                ForEach(0...60, id: \.self) {
-                    Text("\($0)")
-                        .tag($0)
+                    .pickerStyle(WheelPickerStyle())
+                    .frame(width: 100)
+                    .compositingGroup()
+                    .clipped()
+                Text(":")
+                Picker(selection: $minutes, label: Text("Type")){
+                    ForEach(0...60, id: \.self) {
+                        Text("\($0)")
+                            .tag($0)
+                    }
                 }
-            }
-                .pickerStyle(WheelPickerStyle())
-                .frame(width: 100)
-                .clipped()
-            Text(":")
-            Picker(selection: $seconds, label: Text("Occurance")){
-                ForEach(0...60, id: \.self) {
-                    Text("\($0)")
-                        .tag($0)
+                    .pickerStyle(WheelPickerStyle())
+                    .frame(width: 100)
+                    .compositingGroup()
+                    .clipped()
+                Text(":")
+                Picker(selection: $seconds, label: Text("Occurance")){
+                    ForEach(0...60, id: \.self) {
+                        Text("\($0)")
+                            .tag($0)
+                    }
                 }
+                    .pickerStyle(WheelPickerStyle())
+                    .frame(width: 100)
+                    .compositingGroup()
+                    .clipped()
             }
-                .pickerStyle(WheelPickerStyle())
-                .frame(width: 100)
-                .clipped()
-        }
     }
 }
 
