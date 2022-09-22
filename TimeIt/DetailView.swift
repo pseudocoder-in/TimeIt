@@ -52,7 +52,7 @@ struct DetailView: View {
             hours = h
             minutes = m
             seconds = s
-            nameDisabled = name == "Default"
+            nameDisabled = name == DefaultProfileName
         })
     }
 }

@@ -48,6 +48,19 @@ struct SideBar: View {
                                         }) {
                                             Text("Clear all data")
                                         }.buttonStyle(.borderless)
+                                        VStack(alignment: .leading, spacing:6){
+                                            Button(action: {
+                                                //recordManager.resetProfileData()
+                                            }) {
+                                                Text("Export profile data")
+                                            }.buttonStyle(.borderless)
+                                                .disabled(true)
+                                            Text("Easily export your data to a local file and load it later in the app")
+                                                .font(.caption)
+                                                .foregroundColor(Color.secondary)
+                                            Text("Coming in next release")
+                                                .font(.caption)
+                                        }
                                     }
                                     Section(header: Text("Support")){
                                         if(purchaseManager.purchasedIds.isEmpty){
@@ -62,7 +75,7 @@ struct SideBar: View {
                                                             Text("Rs 140")
                                                         }
                                                 }
-                                                Text("We need to pay anuual fee to Apple in order to keep this product in the appstore. We need your support in maintaining this app.")
+                                                Text("We need your support in maintaining this app and keep it listed in the appstore.")
                                                     .font(.caption)
                                                     .foregroundColor(Color.secondary)
                                                 Text("All the features will always be free and wihtout any ads").font(.caption)
@@ -83,9 +96,9 @@ struct SideBar: View {
                                     
                                     Section(header: Text("ABOUT")) {
                                         HStack {
-                                            Text("Version")
+                                            Text("Version").font(.caption)
                                             Spacer()
-                                            Text("0.0.1")
+                                            Text("0.0.1").font(.caption)
                                         }
                                         
                                         HStack {
@@ -96,7 +109,6 @@ struct SideBar: View {
                                         }
                                     }
                                 }
-                                .padding(.top, 100)
                                 
                                 Text("@pseudocoder.in")
                                     .font(.caption2)

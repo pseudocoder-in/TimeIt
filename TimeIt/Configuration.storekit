@@ -10,8 +10,8 @@
       "internalID" : "576DF402",
       "localizations" : [
         {
-          "description" : "an app to track your workouts time",
-          "displayName" : "Track It",
+          "description" : "An app to track your workouts time",
+          "displayName" : "Time It",
           "locale" : "en_US"
         }
       ],

@@ -19,7 +19,7 @@ struct ContentView: View {
                 ProfileView()
                     .environmentObject(recordManager)
                     .tabItem {
-                        Label("Profiles", systemImage: "house.fill")
+                        Label("Profiles", systemImage: "square.stack.3d.up.fill")
                     }
                     .tag(1)
                 TimerView()

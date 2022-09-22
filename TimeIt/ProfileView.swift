@@ -23,7 +23,7 @@ struct ProfileView: View {
                             //    .padding(.horizontal)
                             Text(profile.name)
                         }
-                        .deleteDisabled(profile.name == "Default")
+                        .deleteDisabled(profile.name == DefaultProfileName)
                         .background( NavigationLink("", destination: DetailView(profileId: profile.id)).opacity(0) )
                     }
                     .onDelete{indexSet in
@@ -117,7 +117,7 @@ struct AddProfileView : View {
                 }
                 Spacer()
                 Button(action: {
-                    if(name == "Default"){
+                    if(name == DefaultProfileName){
                         showingAlert = true
                     } else {
                         let newProfile = Profile(id:UUID(), name:name, records: [], target: hours * 3600 + minutes * 60 + seconds)

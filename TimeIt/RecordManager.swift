@@ -8,6 +8,7 @@
 import Foundation
 
 let defaultTarget : Int = 20
+let DefaultProfileName = "Default"
 
 struct Record : Codable {
     
@@ -24,7 +25,7 @@ struct Profile : Codable {
     var name : String
     var records: [Record]
     var target: Int
-    static let DefaultProfile = Profile(id:UUID(), name:"Default", records: [Record.defaultRecord], target: defaultTarget)
+    static let DefaultProfile = Profile(id:UUID(), name:DefaultProfileName, records: [Record.defaultRecord], target: defaultTarget)
     static let ExampleProfile = Profile(id:UUID(), name:"Test", records: [Record.example], target: defaultTarget)
 }
 
@@ -41,7 +42,7 @@ class RecordManager : ObservableObject {
     @Published var timerType : TimerType
     
     init() {
-        let profile = Profile(id:UUID(), name:"Default", records: [], target: defaultTarget)
+        let profile = Profile(id:UUID(), name:DefaultProfileName, records: [], target: defaultTarget)
         profiles = [profile]
         activeProfileIndex = 0
         activeProfileId = profile.id
@@ -94,7 +95,7 @@ class RecordManager : ObservableObject {
     func removeProfile(atOffsets: IndexSet){
         profiles.remove(atOffsets: atOffsets)
         if(atOffsets.contains(activeProfileIndex)){
-            activeProfileIndex = self.profiles.firstIndex { $0.name == "Default" } ?? 0
+            activeProfileIndex = self.profiles.firstIndex { $0.name == DefaultProfileName } ?? 0
         }
         saveDataToStorage()
     }
@@ -133,7 +134,7 @@ class RecordManager : ObservableObject {
     func resetProfileData(){
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: "Profiles")
-        let profile = Profile(id:UUID(), name:"Default", records: [], target: defaultTarget)
+        let profile = Profile(id:UUID(), name:DefaultProfileName, records: [], target: defaultTarget)
         profiles = [profile]
         activeProfileId = profile.id
         activeProfileIndex = 0
