@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum TimerType : Int, Codable{
+enum TimerType : Int, Codable {
     case classic, modern
 }
 
@@ -27,10 +27,10 @@ struct TimerView: View {
                 StopwatchView(timeElapsed: $timeElapsed, timerType: $timerType)
                 Spacer()
                 Picker("Timer Type", selection: $timerType) {
-                    Text("Classic")
-                        .tag(TimerType.classic)
                     Text("Modern")
                         .tag(TimerType.modern)
+                    Text("Classic")
+                        .tag(TimerType.classic)
                 }
                 .onAppear(perform: {
                     timerType = recordManager.timerType

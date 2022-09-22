@@ -83,6 +83,7 @@ struct StopwatchView: View {
                 .frame(width: 150, height: 150, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                 //.background(Color(UIColor.secondaryLabel.withAlphaComponent(0.5)))
                 .cornerRadius(150)
+                .contentShape(Circle())
                 .onTapGesture {
                     if(isTimerRunning){
                         recordManager.addToRecord(seconds: Int(timeElapsed))
@@ -124,8 +125,9 @@ struct StopwatchView: View {
                                 }
                 }
                 .padding()
-                .frame(width: 150, height: 150, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                .cornerRadius(150)
+                .frame(width: 180, height: 180, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                .cornerRadius(180)
+                .contentShape(Circle())
                 .onTapGesture {
                     if(isTimerRunning){
                         recordManager.addToRecord(seconds: Int(timeElapsed))
