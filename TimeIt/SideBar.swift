@@ -38,7 +38,6 @@ struct SideBar: View {
     var content: some View {
             HStack(alignment: .top) {
                 ZStack(alignment: .top) {
-                    VStack {
                         NavigationView {
                             VStack {
                                 Form {
@@ -108,7 +107,7 @@ struct SideBar: View {
                                             Spacer()
                                         }
                                     }
-                                }
+                                }.padding(.vertical, 80)
                                 
                                 Text("@pseudocoder.in")
                                     .font(.caption2)
@@ -116,7 +115,6 @@ struct SideBar: View {
                             .background(Color(UIColor.systemGroupedBackground))
                         }
                         .navigationTitle("Settings")
-                    }
                     HStack(spacing:0) {
                         Text("Time")
                             .font(.title)
