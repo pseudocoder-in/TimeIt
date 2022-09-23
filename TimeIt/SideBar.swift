@@ -9,12 +9,14 @@ import SwiftUI
 
 struct SideBar: View {
     @Binding var isSidebarVisible: Bool
+    
     var sideBarWidth = UIScreen.main.bounds.size.width * 0.7
     
     @EnvironmentObject var recordManager: RecordManager
+    @EnvironmentObject var screen: Screen
     
     @StateObject var purchaseManager: PurchaseManager = PurchaseManager()
-
+    
     
     var body: some View {
         ZStack {
@@ -42,11 +44,12 @@ struct SideBar: View {
                             VStack {
                                 Form {
                                     Section (header: Text("App Settings")){
-                                        Button(action: {
-                                            recordManager.resetProfileData()
-                                        }) {
-                                            Text("Clear all data")
-                                        }.buttonStyle(.borderless)
+                                        Toggle(isOn : $screen.keepScreenOn){
+                                            VStack(alignment: .leading){
+                                                Text("Screen on")
+                                                Text("Keep screen on while timer is running").font(.caption)
+                                            }
+                                        }
                                         VStack(alignment: .leading, spacing:6){
                                             Button(action: {
                                                 //recordManager.resetProfileData()
@@ -60,6 +63,11 @@ struct SideBar: View {
                                             Text("Coming in next release")
                                                 .font(.caption)
                                         }
+                                        Button(action: {
+                                            recordManager.resetProfileData()
+                                        }) {
+                                            Text("Clear all data")
+                                        }.buttonStyle(.borderless)
                                     }
                                     Section(header: Text("Support")){
                                         if(purchaseManager.purchasedIds.isEmpty){

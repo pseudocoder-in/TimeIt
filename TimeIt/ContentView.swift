@@ -7,9 +7,13 @@
 
 import SwiftUI
 
+class Screen: ObservableObject {
+    @Published var keepScreenOn: Bool = false
+}
+
 struct ContentView: View {
     @State private var isSideBarOpened = false
-    
+    @StateObject var screen : Screen = Screen()
     @StateObject var recordManager = RecordManager()
     @State private var selection = 2
     
@@ -18,12 +22,14 @@ struct ContentView: View {
             TabView(selection:$selection) {
                 ProfileView()
                     .environmentObject(recordManager)
+                    .environmentObject(screen)
                     .tabItem {
                         Label("Profiles", systemImage: "square.stack.3d.up.fill")
                     }
                     .tag(1)
                 TimerView()
                     .environmentObject(recordManager)
+                    .environmentObject(screen)
                     .tabItem {
                         Label("Timer", systemImage: "timer")
                     }
@@ -39,6 +45,7 @@ struct ContentView: View {
             .opacity(isSideBarOpened ? 0.3 : 1)
             SideBar(isSidebarVisible: $isSideBarOpened)
                 .environmentObject(recordManager)
+                .environmentObject(screen)
         }
     }
 }

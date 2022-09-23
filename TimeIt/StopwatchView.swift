@@ -26,6 +26,7 @@ struct StopwatchView: View {
     
     
     @EnvironmentObject var recordManager: RecordManager
+    @EnvironmentObject var screen : Screen
     
     @State var isTimerRunning = false
 
@@ -91,6 +92,7 @@ struct StopwatchView: View {
                     firstTime = true
                     timeElapsed = 0
                     isTimerRunning.toggle()
+                    UIApplication.shared.isIdleTimerDisabled = screen.keepScreenOn && isTimerRunning
                 }
             }
             Text("\(String(format: "%02d", Int(hourValue * 12))):\(String(format: "%02d", Int(minuteValue * 60))):\(String(format: "%02d", Int(secondValue * 60))):\(String(format: "%02d", Int(mSecondValue))) ")
@@ -135,6 +137,7 @@ struct StopwatchView: View {
                     firstTime = true
                     timeElapsed = 0
                     isTimerRunning.toggle()
+                    UIApplication.shared.isIdleTimerDisabled = screen.keepScreenOn && isTimerRunning
                 }
             }
             Text("\(String(format: "%02d", Int(hourValue * 12))):\(String(format: "%02d", Int(minuteValue * 60))):\(String(format: "%02d", Int(secondValue * 60))):\(String(format: "%02d", Int(mSecondValue))) ")

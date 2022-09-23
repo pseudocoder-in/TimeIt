@@ -83,23 +83,35 @@ struct Bar : View {
     var maxHeight :Int
     
     var body: some View {
-        return ZStack(alignment: .bottom) {
+        return ZStack(alignment: .bottomLeading) {
             Rectangle()
                 .fill(getBarColor(height: height, target: target))
                 .frame(width: 20, height: CGFloat(self.height))
                 .opacity(0.9)
                 .cornerRadius(5)
-            Text("\(durationInSec)")
+            Text("\(getTimeValueFormatted(durationInSec: durationInSec))")
                 .font(.caption)
-                .rotationEffect(.degrees(-90))
-                .fixedSize()
-                .frame(width: 20, height: 180, alignment: .bottom)
-                .padding(.vertical)
+                .rotated()
+                .padding(.vertical, 5)
             Line()
                 .stroke(style: StrokeStyle(lineWidth: self.target > Int(maxHeight) ? 0 : 1, dash: [2]))
                 .frame(height: min(CGFloat(self.target), CGFloat(maxHeight)))
         }
     }
+}
+
+func getTimeValueFormatted(durationInSec: Int) -> String {
+    let (h, m, s) = secondsToHoursMinutesSeconds(durationInSec)
+    if(h > 0){
+        return "\(h) Hr \(m) Min \(s) Sec"
+    }
+    if(m > 0) {
+        return "\(m) Min \(s) Sec"
+    }
+    if( s > 0) {
+        return "\(s) Sec"
+    }
+    return ""
 }
 
 struct Line: Shape {

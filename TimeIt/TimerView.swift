@@ -17,6 +17,7 @@ struct TimerView: View {
     @State var minuteValue: Float = 0.0
     @State var hourValue: Float = 0.0
     @State var timerType : TimerType = TimerType.modern
+    @State var keepScreenOn : Bool = false
     
     @EnvironmentObject var recordManager: RecordManager
     
